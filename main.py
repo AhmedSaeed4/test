@@ -1,4 +1,3 @@
-
 import streamlit as st
 import json
 import os
@@ -7,7 +6,6 @@ import hashlib
 from cryptography.fernet import Fernet
 from datetime import datetime
 from base64 import urlsafe_b64encode
-import secrets
 
 # Some constants 
 DATA_FILE = "data_store.json"
@@ -20,7 +18,7 @@ LOCKOUT_TIME = 60
 # 1. For Hashing Password
 def hash_passkey(passkey, salt=None):
     if not salt:
-        salt = secrets.token_bytes(16)
+        salt = os.urandom(16)  # replaced secrets.token_bytes(16)
     hashed = hashlib.pbkdf2_hmac('sha256', passkey.encode(), salt, 100000)
     return urlsafe_b64encode(hashed).decode(), salt.hex()
 
